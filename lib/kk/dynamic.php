@@ -80,9 +80,54 @@ function dynamic_set(&$object,$key,&$value) {
 
 }
 
-function dynamic_get_with_keys() {
+/**
+ * @param  \stdClass|array 	&$object 
+ * @param  string|array 	$keys    
+ * @return any         
+ */
+function dynamic_get_with_keys(&$object,$keys) {
+	
+	if(is_string($keys)) {
+		$keys = split('\\.', $keys)
+	}
+
+	if is_array($keys) {
+
+		while(count($keys) > 0) {
+			$object = dynamic_get($object,array_shift($keys));
+		}
+
+		return $object;
+
+	} else {
+		return $object;
+	}
 
 }
 
+/**
+ * @param  \stdClass|array 	&$object 
+ * @param  string|array 	$keys    
+ * @param  any 				$value   
+ * @return void          
+ */
+function dynamic_set_with_keys(&$object,$keys,$value) {
+
+	if(is_string($keys)) {
+		$keys = split('\\.', $keys)
+	}
+
+	if is_array($keys) {
+
+		while(count($keys) > 0) {
+			if(count($keys) == 1) {
+				dynamic_set($object,array_shift($keys));
+			} else {
+				$object = dynamic_get($object,array_shift($keys),true);
+			}
+		}
+	}
+
+}
 
 
